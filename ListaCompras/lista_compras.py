@@ -10,7 +10,7 @@ OPCOES = {
 while rodando:
     opcao_escolhida = input("Selecione uma opção: \n [i]nserir [a]pagar [l]istar [s]air : ")
     if opcao_escolhida == OPCOES['listar']:
-        if len(lista) == 0 :
+        if not lista :
             print("Sua lista está vazia")
         else:
             for i, item in enumerate(lista, start=1):
@@ -22,7 +22,7 @@ while rodando:
         print(f'{item_add} inserido na lista de compra')
 
     elif opcao_escolhida == OPCOES["apagar"]:
-        if len(lista) == 0 :
+        if not lista :
             print("Sua lista está vazia, portanto não há o que apagar \n")
             continue
         item_remove = input("Insira a posição do item que deseja remover: ")
