@@ -1,105 +1,105 @@
-CONTA = '123456'
-SENHA = '123'
-saldo = 0.0
-LIMITE_CHEQUE_ESPECIAL = 100.0
-cheque_especial_utilizado = 0.0
-tentativas = 0
-TENTATIVAS_MAXIMAS = 3
-rodando_login = True
+ACCOUNT = '123456'
+PASSWORD = '123'
+balance = 0.0
+OVERDRAFT_LIMIT = 100.0
+overdraft_used = 0.0
+attempts = 0
+MAX_ATTEMPTS = 3
+login_running = True
 
-while rodando_login:
-    conta_digitada = input("Informe sua conta: ")
-    senha_digitada = input("Informe sua senha: ")
+while login_running:
+    entered_account = input("Enter your account number: ")
+    entered_password = input("Enter your password: ")
 
-    if conta_digitada == CONTA and senha_digitada == SENHA:
-        rodando = True
+    if entered_account == ACCOUNT and entered_password == PASSWORD:
+        running = True
 
-        while rodando:
-            opcao_selecionada = input(
-                "Informe a opção desejada \n"
-                "1-Saldo \n"
-                "2-Depósito \n"
-                "3-Retirada \n"
-                "4-Sair \n"
+        while running:
+            selected_option = input(
+                "Select the desired option \n"
+                "1-Balance \n"
+                "2-Deposit \n"
+                "3-Withdrawal \n"
+                "4-Exit \n"
             )
 
-            if opcao_selecionada == '4':
-                print('Saindo...')
-                rodando = rodando_login = False
+            if selected_option == '4':
+                print('Exiting...')
+                running = login_running = False
 
-            elif opcao_selecionada == '1':
-                print(f'Seu saldo é de: R${saldo} \n')
+            elif selected_option == '1':
+                print(f'Your balance is: ${balance} \n')
 
-            elif opcao_selecionada == '2':
-                qtd_depositar = input('Quanto deseja depositar? \n')
-
-                try:
-                    qtd_depositar = float(qtd_depositar)
-                    if qtd_depositar >= 0:
-                        if cheque_especial_utilizado > 0.0:
-                            cheque_especial_utilizado -= qtd_depositar
-                            if cheque_especial_utilizado < 0:
-                                cheque_especial_utilizado = 0
-                            saldo += qtd_depositar
-                            print(f"Seu novo saldo é de R${saldo} \n")
-                            continue
-                        saldo += qtd_depositar
-                        print(f"Seu novo saldo é de R${saldo} \n")
-                    else:
-                        print("Por favor, informe um número válido \n")
-                except ValueError:
-                    print("Por favor, informe um número válido \n")
-
-            elif opcao_selecionada == '3':
-                qtd_retirar = input('Quanto deseja retirar? \n')
+            elif selected_option == '2':
+                deposit_amount = input('How much would you like to deposit? \n')
 
                 try:
-                    qtd_retirar = float(qtd_retirar)
-                    if qtd_retirar > 0:
-                        if cheque_especial_utilizado == LIMITE_CHEQUE_ESPECIAL:
+                    deposit_amount = float(deposit_amount)
+                    if deposit_amount >= 0:
+                        if overdraft_used > 0.0:
+                            overdraft_used -= deposit_amount
+                            if overdraft_used < 0:
+                                overdraft_used = 0
+                            balance += deposit_amount
+                            print(f"Your new balance is ${balance} \n")
+                            continue
+                        balance += deposit_amount
+                        print(f"Your new balance is ${balance} \n")
+                    else:
+                        print("Please enter a valid number \n")
+                except ValueError:
+                    print("Please enter a valid number \n")
+
+            elif selected_option == '3':
+                withdrawal_amount = input('How much would you like to withdraw? \n')
+
+                try:
+                    withdrawal_amount = float(withdrawal_amount)
+                    if withdrawal_amount > 0:
+                        if overdraft_used == OVERDRAFT_LIMIT:
                             print(
-                                f"Já atingiu o limite do cheque especial que é de R$ {LIMITE_CHEQUE_ESPECIAL} \n"
+                                f"You have reached the overdraft limit of ${OVERDRAFT_LIMIT} \n"
                             )
                             continue
-                        if abs(saldo - qtd_retirar) > LIMITE_CHEQUE_ESPECIAL:
+                        if abs(balance - withdrawal_amount) > OVERDRAFT_LIMIT:
                             print(
-                                f"Este valor de retirada excede o limite do cheque especial que é de R$ {LIMITE_CHEQUE_ESPECIAL} \n"
+                                f"This withdrawal amount exceeds the overdraft limit of ${OVERDRAFT_LIMIT} \n"
                             )
                             continue
-                        if saldo <= 0:
-                            cheque_especial_utilizado += qtd_retirar
-                            saldo -= qtd_retirar
+                        if balance <= 0:
+                            overdraft_used += withdrawal_amount
+                            balance -= withdrawal_amount
                             print(
-                                f"Seu novo saldo é de R${saldo}, você está no cheque especial "
-                                f"que tem um limite de até R${LIMITE_CHEQUE_ESPECIAL} e você ainda pode "
-                                f"utilizar R${LIMITE_CHEQUE_ESPECIAL - cheque_especial_utilizado}\n"
+                                f"Your new balance is ${balance}, you are in overdraft "
+                                f"which has a limit of up to ${OVERDRAFT_LIMIT} and you can still "
+                                f"use ${OVERDRAFT_LIMIT - overdraft_used}\n"
                             )
                             continue
-                        if saldo >= 0 and saldo - qtd_retirar < 0:
-                            cheque_especial_utilizado = abs(saldo)
-                            saldo -= qtd_retirar
+                        if balance >= 0 and balance - withdrawal_amount < 0:
+                            overdraft_used = abs(balance)
+                            balance -= withdrawal_amount
                             print(
-                                f"Seu novo saldo é de R${saldo}, você está no cheque especial "
-                                f"que tem um limite de até R${LIMITE_CHEQUE_ESPECIAL} e você ainda pode "
-                                f"utilizar R${LIMITE_CHEQUE_ESPECIAL - cheque_especial_utilizado}\n"
+                                f"Your new balance is ${balance}, you are in overdraft "
+                                f"which has a limit of up to ${OVERDRAFT_LIMIT} and you can still "
+                                f"use ${OVERDRAFT_LIMIT - overdraft_used}\n"
                             )
                             continue
 
-                        saldo -= qtd_retirar
-                        print(f"Seu novo saldo é de R${saldo} \n")
+                        balance -= withdrawal_amount
+                        print(f"Your new balance is ${balance} \n")
                     else:
-                        print("Por favor, informe um número válido \n")
+                        print("Please enter a valid number \n")
                 except ValueError:
-                    print("Por favor, informe um número válido \n")
+                    print("Please enter a valid number \n")
 
     else:
-        tentativas += 1
-        if tentativas == TENTATIVAS_MAXIMAS:
+        attempts += 1
+        if attempts == MAX_ATTEMPTS:
             print(
-                f"Você errou: {tentativas}/{TENTATIVAS_MAXIMAS} vezes seu usuário/senha, tente novamente mais tarde"
+                f"You have entered incorrect username/password {attempts}/{MAX_ATTEMPTS} times, please try again later"
             )
             break
         print(
-            f"Conta ou Senha incorreta(s), você errou: {tentativas} de no máximo: {TENTATIVAS_MAXIMAS}"
+            f"Incorrect account number or password, you have made {attempts} out of a maximum of {MAX_ATTEMPTS} attempts"
         )
         continue
