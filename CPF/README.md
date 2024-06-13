@@ -1,5 +1,3 @@
-### README em Inglês
-
 # CPF Generator and Validator
 
 This repository contains two Python scripts:
